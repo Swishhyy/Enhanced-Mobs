@@ -23,3 +23,8 @@ mob-files:
 updates:
   check-for-updates: true  # Enable update checks for the plugin
   notify-admins: true  # Notify admins of available updates on server startup
+
+performance:
+  max_concurrent_customizations: 10
+  min_tps_threshold: 25.0
+  max_customizations_per_tick: 5

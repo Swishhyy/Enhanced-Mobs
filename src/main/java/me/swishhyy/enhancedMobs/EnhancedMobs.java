@@ -1,6 +1,5 @@
 package me.swishhyy.enhancedMobs;
 
-import me.swishhyy.enhancedMobs.MobHandling.MobHandler;
 import me.swishhyy.enhancedMobs.MobHandling.MobSpawning;
 import me.swishhyy.enhancedMobs.commands.EnhancedMobsCommand;
 import org.bukkit.command.Command;
@@ -34,10 +33,9 @@ public final class EnhancedMobs extends JavaPlugin {
         // Check and generate required files
         checkRequiredFiles();
 
-        // Initialize MobHandler and MobSpawning
-        new MobHandler(this);
+        // Initialize MobSpawning to apply configurations
         MobSpawning mobSpawning = new MobSpawning(this);
-        mobSpawning.scheduleSpawnReplacement();
+        mobSpawning.initializeCustomMobs(); // Prepare mob data
 
         // Register the "/enhancedmobs" command
         Objects.requireNonNull(getCommand("enhancedmobs")).setExecutor(new EnhancedMobsCommand(this));

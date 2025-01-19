@@ -12,43 +12,65 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MobHandler implements Listener {
 
     private final EnhancedMobs plugin;
-    private final FileConfiguration mobsConfig; // Added mobsConfig field
+    private final FileConfiguration mobsConfig;
+    private final Set<String> loggedMobs = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private double cachedTPS = 20.0;
+    private long lastTPSFetch = 0;
 
     public MobHandler(EnhancedMobs plugin) {
         this.plugin = plugin;
-        this.mobsConfig = plugin.getMobsConfig(); // Initialize mobsConfig here
+        this.mobsConfig = plugin.getMobsConfig();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler
     public void onMobSpawn(CreatureSpawnEvent event) {
-        LivingEntity entity = event.getEntity();
-
-        String mobName = entity.getType().name().toLowerCase();
-
-        if (!mobsConfig.contains(mobName)) return;
-
-        ConfigurationSection mobSection = mobsConfig.getConfigurationSection(mobName);
-        if (mobSection == null) return;
-
-        // Enforce spawn conditions
-        if (!enforceSpawnConditions(entity, mobSection)) {
-            event.setCancelled(true);
+        // Skip if TPS is low
+        if (getServerTPS() < plugin.getConfig().getDouble("performance.min_tps_threshold", 18.0)) {
             return;
         }
 
+        if (!(event.getEntity() instanceof Mob mob)) {
+            return;
+        }
+
+        String mobName = mob.getType().name().toLowerCase();
+
+        // Skip if mob type is not configured
+        if (!mobsConfig.contains(mobName)) {
+            return;
+        }
+
+        ConfigurationSection mobSection = mobsConfig.getConfigurationSection(mobName);
+        if (mobSection == null) {
+            return;
+        }
+
+        // Skip if spawn conditions are not met
+        if (!enforceSpawnConditions(mob, mobSection)) {
+            return;
+        }
+
+        // Apply customizations
+        customizeMob(mob, mobSection);
+    }
+
+    private void customizeMob(LivingEntity entity, ConfigurationSection mobSection) {
         // Set health
         double health = mobSection.getDouble("health", 20.0);
         AttributeInstance healthAttribute = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (healthAttribute != null) {
             healthAttribute.setBaseValue(health);
-            entity.setHealth(health); // Ensure current health matches max health
+            entity.setHealth(health);
         }
 
         // Set speed
@@ -62,8 +84,7 @@ public class MobHandler implements Listener {
         if (entity instanceof Mob mob) {
             ConfigurationSection equipmentSection = mobSection.getConfigurationSection("equipment");
             if (equipmentSection != null) {
-                Set<String> equipmentKeys = equipmentSection.getKeys(false);
-                for (String item : equipmentKeys) {
+                for (String item : equipmentSection.getKeys(false)) {
                     Material material = Material.matchMaterial(item.toUpperCase());
                     double chance = equipmentSection.getDouble(item + ".chance", 0.0) / 100;
                     if (material != null && Math.random() <= chance) {
@@ -73,17 +94,19 @@ public class MobHandler implements Listener {
             }
         }
 
-        // Log changes
-        plugin.getLogger().info("Applied configuration to mob: " + mobName);
+        // Log customization without spamming console
+        if (plugin.getConfig().getBoolean("log.mob_customizations", false)) {
+            logOnce("Customized mob: " + entity.getType().name());
+        }
     }
 
-    /**
-     * Enforces spawn conditions for a mob.
-     *
-     * @param entity     The entity being spawned.
-     * @param mobSection The configuration section for the mob.
-     * @return True if spawn conditions are met, false otherwise.
-     */
+    private void logOnce(String message) {
+        if (loggedMobs.add(message)) {
+            plugin.getLogger().info(message);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> loggedMobs.remove(message), 200L); // Remove after 10 seconds
+        }
+    }
+
     private boolean enforceSpawnConditions(LivingEntity entity, ConfigurationSection mobSection) {
         List<String> spawnConditions = mobSection.getStringList("spawn_conditions");
 
@@ -93,9 +116,7 @@ public class MobHandler implements Listener {
             // Check for night condition
             if (condition.equals("night")) {
                 long time = entity.getWorld().getTime();
-                boolean isNight = time >= 13000 && time <= 23000;
-                if (!isNight) {
-                    plugin.getLogger().info("Cancelled spawn of " + entity.getType().name() + " due to time condition: night");
+                if (time < 13000 || time > 23000) {
                     return false;
                 }
             }
@@ -103,7 +124,6 @@ public class MobHandler implements Listener {
             // Check for land condition
             if (condition.equals("land")) {
                 if (!entity.getLocation().getBlock().isPassable()) {
-                    plugin.getLogger().info("Cancelled spawn of " + entity.getType().name() + " due to condition: land");
                     return false;
                 }
             }
@@ -111,7 +131,6 @@ public class MobHandler implements Listener {
             // Check for water condition
             if (condition.equals("water")) {
                 if (!entity.getLocation().getBlock().isLiquid()) {
-                    plugin.getLogger().info("Cancelled spawn of " + entity.getType().name() + " due to condition: water");
                     return false;
                 }
             }
@@ -120,14 +139,26 @@ public class MobHandler implements Listener {
             if (condition.startsWith("biome:")) {
                 String biome = condition.replace("biome:", "").toUpperCase();
                 if (!entity.getLocation().getBlock().getBiome().name().equals(biome)) {
-                    plugin.getLogger().info("Cancelled spawn of " + entity.getType().name() + " due to biome condition: " + biome);
                     return false;
                 }
             }
-
-            // Additional conditions can be added here
         }
 
         return true;
+    }
+
+    private double getServerTPS() {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastTPSFetch > 5000) { // Fetch TPS every 5 seconds
+            lastTPSFetch = currentTime;
+            try {
+                Object minecraftServer = Bukkit.getServer().getClass().getMethod("getServer").invoke(Bukkit.getServer());
+                double[] recentTps = (double[]) minecraftServer.getClass().getField("recentTps").get(minecraftServer);
+                cachedTPS = recentTps[0];
+            } catch (ReflectiveOperationException e) {
+                plugin.getLogger().severe("Failed to fetch server TPS.");
+            }
+        }
+        return cachedTPS;
     }
 }
