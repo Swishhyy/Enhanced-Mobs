@@ -1,0 +1,12 @@
+health: 40
+speed: 0.25
+drops:
+  - item: ROTTEN_FLESH
+    amount: 2
+    chance: 100  # Percentage chance to drop
+  - item: IRON_INGOT
+    amount: 1
+    chance: 5
+equipment:
+  head: "IRON_HELMET"
+  weapon: "IRON_SWORD"

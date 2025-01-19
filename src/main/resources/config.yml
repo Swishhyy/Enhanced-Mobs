@@ -1,0 +1,25 @@
+# EnhancedMobs Configuration File
+# Adjust global plugin settings here
+
+general:
+  debug: false  # Enable/Disable debug messages in the console
+
+mobs:
+  custom-mob-spawning:
+    enabled: true  # Enable custom mob spawning logic
+    spawn-rate: 10  # Number of custom mobs to spawn per minute
+    spawn-limits:
+      max-mobs-per-chunk: 5  # Maximum custom mobs allowed per chunk
+      max-mobs-global: 100  # Maximum custom mobs allowed globally
+
+# //////////////////////////////////
+# DO NOT EDIT WILL BREAK THE PLUGIN
+mob-files:
+  hostile: "vanillamobs/hostilemobs/"
+  passive: "vanillamobs/passivemobs/"
+  bosses: "vanillabosses/"
+# ///////////////////////////////////
+
+updates:
+  check-for-updates: true  # Enable update checks for the plugin
+  notify-admins: true  # Notify admins of available updates on server startup

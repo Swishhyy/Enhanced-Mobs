@@ -1,0 +1,27 @@
+commands:
+  enhancedmobs:
+    usage: "Use /enhancedmobs reload <#All|#Config|#Messages> to reload specific files."
+    no_permission: "You do not have permission to use this command!"
+    reload_success: "{plugin_name} configuration reloaded successfully!"
+    reload:
+      all: "{plugin_name} All configurations and messages have been reloaded!"
+      config: "{plugin_name} Configuration file has been reloaded!"
+      messages: "{plugin_name} Messages file has been reloaded!"
+    unknown_subcommand: "Unknown subcommand! Usage: /enhancedmobs [reload <#All|#Config|#Messages>]"
+    invalid-usage: "{plugin_name} Invalid command usage! Use /enhancedmobs for help."
+    missing-files: "{plugin_name} Configuration error: Required files are missing or unreadable!"
+plugin:
+  enabled: "{plugin_name} has been enabled!"
+  disabled: "{plugin_name} has been disabled!"
+  unloaded: "§4§l{plugin_name} has unloaded successfully."
+spawning:
+  mob-spawned: "{plugin_name} A {mob_name} has been spawned at {location}!"
+  spawn-limit-reached: "{plugin_name} Spawn limit reached: {limit} mobs per chunk."
+  error-spawning: "{plugin_name} Failed to spawn {mob_name} due to an internal error."
+updates:
+  check: "{plugin_name} Checking for updates..."
+  available: "{plugin_name} An update is available! Visit {update_url}."
+  no_updates: "{plugin_name} No updates found. You are running the latest version."
+debug:
+  enabled: "{plugin_name} Debug mode enabled. Detailed logs are now visible."
+  disabled: "{plugin_name} Debug mode disabled. Detailed logs are hidden."
