@@ -23,10 +23,13 @@ public final class EnhancedMobs extends JavaPlugin {
         saveDefaultConfig();
         loadMessages();
 
-        getLogger().info(getMessage("plugin.enabled", "{plugin_name} has been enabled!"));
+        // Check and generate required files
+        checkRequiredFiles();
 
         // Register the "/enhancedmobs" command
         Objects.requireNonNull(getCommand("enhancedmobs")).setExecutor(new EnhancedMobsCommand(this));
+
+        getLogger().info(getMessage("plugin.enabled", "{plugin_name} has been enabled!"));
     }
 
     @Override
@@ -34,6 +37,23 @@ public final class EnhancedMobs extends JavaPlugin {
         // Send a message to the console
         getLogger().info(getMessage("plugin.disabled", "{plugin_name} has been disabled!"));
         getServer().getConsoleSender().sendMessage(getMessage("plugin.unloaded", "§4§l{plugin_name} has unloaded successfully."));
+    }
+
+    private void checkRequiredFiles() {
+        // Define the files to check and their default content in resources
+        String[] filesToCheck = {"mobs.yml", "config.yml", "bosses.yml", "messages.yml"};
+
+        for (String fileName : filesToCheck) {
+            File file = new File(getDataFolder(), fileName);
+            if (!file.exists()) {
+                // Generate the file with default content if it exists in resources
+                saveResource(fileName, false);
+                getLogger().info(fileName + " was not found and has been generated with default content.");
+            } else {
+                // Log success for each file that exists
+                getLogger().info(fileName + " loaded successfully.");
+            }
+        }
     }
 
     private void loadMessages() {

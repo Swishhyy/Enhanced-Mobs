@@ -14,6 +14,7 @@ plugin:
   enabled: "{plugin_name} has been enabled!"
   disabled: "{plugin_name} has been disabled!"
   unloaded: "§4§l{plugin_name} has unloaded successfully."
+  file_not_detected: "{plugin_name} {file} isn't detected. Plugin is offline."
 spawning:
   mob-spawned: "{plugin_name} A {mob_name} has been spawned at {location}!"
   spawn-limit-reached: "{plugin_name} Spawn limit reached: {limit} mobs per chunk."
