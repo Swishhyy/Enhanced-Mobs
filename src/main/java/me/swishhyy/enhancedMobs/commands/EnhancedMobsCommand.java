@@ -28,25 +28,21 @@ public class EnhancedMobsCommand implements CommandExecutor, TabExecutor {
                              @NotNull String[] args) {
 
         if (args.length == 0) {
-            // No subcommands provided, show usage or help
             sender.sendMessage(plugin.getMessage("commands.enhancedmobs.usage",
-                    "{prefix}Use /enhancedmobs reload <#All|#Config|#Messages> to reload files."));
+                    "{prefix}Use /enhancedmobs reload <#All|#Config|#Messages|#Mobs|#Bosses> to reload files."));
             return true;
         }
 
-        // Check if the subcommand is reload
         if (args[0].equalsIgnoreCase("reload")) {
-            // Check permissions
             if (!sender.hasPermission("enhancedmobs.command.admin")) {
                 sender.sendMessage(plugin.getMessage("commands.enhancedmobs.no_permission",
                         "{prefix}You do not have permission to use this command!"));
                 return true;
             }
 
-            // Check the file argument
             if (args.length < 2) {
                 sender.sendMessage(plugin.getMessage("commands.enhancedmobs.reload_usage",
-                        "{prefix}Usage: /enhancedmobs reload <#All|#Config|#Messages>"));
+                        "{prefix}Usage: /enhancedmobs reload <#All|#Config|#Messages|#Mobs|#Bosses>"));
                 return true;
             }
 
@@ -56,8 +52,10 @@ public class EnhancedMobsCommand implements CommandExecutor, TabExecutor {
                 case "#all":
                     plugin.reloadConfig();
                     plugin.reloadMessages();
+                    plugin.reloadMobsConfig();
+                    plugin.reloadBossesConfig();
                     sender.sendMessage(plugin.getMessage("commands.enhancedmobs.reload.all",
-                            "{prefix}All configurations and messages have been reloaded!"));
+                            "{prefix}All configurations, mobs, and bosses files have been reloaded!"));
                     break;
 
                 case "#config":
@@ -72,17 +70,28 @@ public class EnhancedMobsCommand implements CommandExecutor, TabExecutor {
                             "{prefix}Messages file has been reloaded!"));
                     break;
 
+                case "#mobs":
+                    plugin.reloadMobsConfig();
+                    sender.sendMessage(plugin.getMessage("commands.enhancedmobs.reload.mobs",
+                            "{prefix}Mobs configuration file has been reloaded!"));
+                    break;
+
+                case "#bosses":
+                    plugin.reloadBossesConfig();
+                    sender.sendMessage(plugin.getMessage("commands.enhancedmobs.reload.bosses",
+                            "{prefix}Bosses configuration file has been reloaded!"));
+                    break;
+
                 default:
                     sender.sendMessage(plugin.getMessage("commands.enhancedmobs.unknown_reload_target",
-                            "{prefix}Unknown file target! Use <#All|#Config|#Messages>."));
+                            "{prefix}Unknown file target! Use <#All|#Config|#Messages|#Mobs|#Bosses>."));
                     break;
             }
             return true;
         }
 
-        // If no valid subcommand is provided
         sender.sendMessage(plugin.getMessage("commands.enhancedmobs.unknown_subcommand",
-                "{prefix}Unknown subcommand! Usage: /enhancedmobs reload <#All|#Config|#Messages>"));
+                "{prefix}Unknown subcommand! Usage: /enhancedmobs reload <#All|#Config|#Messages|#Mobs|#Bosses>."));
         return true;
     }
 
@@ -91,21 +100,18 @@ public class EnhancedMobsCommand implements CommandExecutor, TabExecutor {
                                                 @NotNull Command command,
                                                 @NotNull String alias,
                                                 @NotNull String[] args) {
-        // Provide suggestions for the first argument
         if (args.length == 1) {
             return Stream.of("reload")
                     .filter(subcommand -> subcommand.startsWith(args[0].toLowerCase()))
                     .collect(Collectors.toList());
         }
 
-        // Provide suggestions for the second argument when the first argument is "reload"
         if (args.length == 2 && args[0].equalsIgnoreCase("reload")) {
-            return Stream.of("#All", "#Config", "#Messages")
+            return Stream.of("#All", "#Config", "#Messages", "#Mobs", "#Bosses")
                     .filter(option -> option.toLowerCase().startsWith(args[1].toLowerCase()))
                     .collect(Collectors.toList());
         }
 
-        // Return an empty list for other cases
         return Collections.emptyList();
     }
 }
