@@ -1,0 +1,4 @@
+name: Enhanced Mobs
+version: '0.0.1'
+main: me.swishhyy.enhancedMobs.EnhancedMobs
+api-version: '1.20'
