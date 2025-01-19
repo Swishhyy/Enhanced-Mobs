@@ -40,17 +40,14 @@ public final class EnhancedMobs extends JavaPlugin {
     }
 
     private void checkRequiredFiles() {
-        // Define the files to check and their default content in resources
         String[] filesToCheck = {"mobs.yml", "config.yml", "bosses.yml", "messages.yml"};
 
         for (String fileName : filesToCheck) {
             File file = new File(getDataFolder(), fileName);
             if (!file.exists()) {
-                // Generate the file with default content if it exists in resources
-                saveResource(fileName, false);
+                saveResource(fileName, false); // Generate the file from resources
                 getLogger().info(fileName + " was not found and has been generated with default content.");
             } else {
-                // Log success for each file that exists
                 getLogger().info(fileName + " loaded successfully.");
             }
         }

@@ -1,0 +1,42 @@
+# Boss Mobs Configuration
+
+wither:
+  health: 300
+  speed: 0.6
+  spawn_conditions:
+    - nether
+    - soul_sand_structure
+  drops:
+    - nether_star
+    - obsidian: 5 # Drops 5 obsidian
+  abilities:
+    - summon_wither_skeletons
+    - explosive_skulls
+    - regeneration
+
+ender_dragon:
+  health: 200
+  speed: 0.8
+  spawn_conditions:
+    - end
+  drops:
+    - dragon_breath: 10 # Drops 10 bottles of dragon breath
+  abilities:
+    - fireball_blast
+    - dragon_breath_attack
+    - flying_charge
+
+warden:
+  health: 500
+  speed: 0.3
+  spawn_conditions:
+    - deep_dark
+    - sculk_shrieker_activation
+  drops:
+    - sculk_catalyst
+    - echo_shard: 3 # Drops 3 echo shards
+    - diamond: 2 # Drops 2 diamonds
+  abilities:
+    - sonic_boom
+    - darkness_effect
+    - immense_strength

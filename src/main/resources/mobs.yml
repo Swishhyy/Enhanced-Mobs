@@ -1,0 +1,406 @@
+# Hostile Mobs
+zombie:
+  health: 20
+  speed: 0.23
+  spawn_conditions:
+    - night
+    - land
+    - cave
+  drops:
+    - rotten_flesh
+  equipment:
+    IRON_SWORD:
+      chance: 4%
+
+skeleton:
+  health: 20
+  speed: 0.25
+  spawn_conditions:
+    - night
+    - land
+    - cave
+  drops:
+    - bone
+    - arrow
+  equipment:
+    BOW:
+      chance: 5%
+
+creeper:
+  health: 20
+  speed: 0.22
+  spawn_conditions:
+    - night
+    - land
+  drops:
+    - gunpowder
+
+spider:
+  health: 16
+  speed: 0.3
+  spawn_conditions:
+    - night
+    - land
+  drops:
+    - string
+    - spider_eye
+
+witch:
+  health: 26
+  speed: 0.25
+  spawn_conditions:
+    - night
+    - swamp
+    - raid
+  drops:
+    - glowstone_dust
+    - gunpowder
+
+wither_skeleton:
+  health: 20
+  speed: 0.25
+  spawn_conditions:
+    - nether_fortress
+  drops:
+    - coal
+    - bone
+  equipment:
+    STONE_SWORD:
+      chance: 5%
+
+blaze:
+  health: 20
+  speed: 0.23
+  spawn_conditions:
+    - nether_fortress
+  drops:
+    - blaze_rod
+
+zombified_piglin:
+  health: 20
+  speed: 0.25
+  spawn_conditions:
+    - nether
+  drops:
+    - rotten_flesh
+    - gold_nugget
+  equipment:
+    GOLDEN_SWORD:
+      chance: 5%
+
+hoglin:
+  health: 40
+  speed: 0.3
+  spawn_conditions:
+    - crimson_forest
+  drops:
+    - porkchop
+    - leather
+
+magma_cube:
+  health: 16
+  speed: 0.2
+  spawn_conditions:
+    - nether
+  drops:
+    - magma_cream
+
+guardian:
+  health: 30
+  speed: 0.25
+  spawn_conditions:
+    - ocean
+    - water
+  drops:
+    - prismarine_shard
+
+elder_guardian:
+  health: 80
+  speed: 0.3
+  spawn_conditions:
+    - ocean_monument
+  drops:
+    - prismarine_shard
+    - sponge
+
+drowned:
+  health: 20
+  speed: 0.23
+  spawn_conditions:
+    - water
+  drops:
+    - rotten_flesh
+    - copper_ingot
+  equipment:
+    TRIDENT:
+      chance: 8%
+
+phantom:
+  health: 20
+  speed: 0.35
+  spawn_conditions:
+    - night
+    - air
+  drops:
+    - phantom_membrane
+
+shulker:
+  health: 30
+  speed: 0.0
+  spawn_conditions:
+    - end_city
+  drops:
+    - shulker_shell
+
+enderman:
+  health: 40
+  speed: 0.35
+  spawn_conditions:
+    - night
+    - land
+  drops:
+    - ender_pearl
+
+stray:
+  health: 20
+  speed: 0.25
+  spawn_conditions:
+    - snowy_biomes
+  drops:
+    - bone
+    - arrow_of_slowness
+
+husk:
+  health: 20
+  speed: 0.23
+  spawn_conditions:
+    - desert
+  drops:
+    - rotten_flesh
+
+ghast:
+  health: 10
+  speed: 0.0
+  spawn_conditions:
+    - nether
+  drops:
+    - ghast_tear
+    - gunpowder
+
+piglin:
+  health: 16
+  speed: 0.35
+  spawn_conditions:
+    - nether
+  drops:
+    - gold_nugget
+    - crossbow
+  equipment:
+    GOLDEN_SWORD:
+      chance: 10%
+
+piglin_brute:
+  health: 50
+  speed: 0.35
+  spawn_conditions:
+    - bastion_remnant
+  drops:
+    - gold_nugget
+  equipment:
+    GOLDEN_AXE:
+      chance: 10%
+
+slime:
+  health: 16
+  speed: 0.2
+  spawn_conditions:
+    - swamp
+    - cave
+  drops:
+    - slimeball
+
+# Passive Mobs
+cow:
+  health: 10
+  speed: 0.2
+  spawn_conditions:
+    - land
+  drops:
+    - beef
+    - leather
+
+sheep:
+  health: 8
+  speed: 0.23
+  spawn_conditions:
+    - land
+  drops:
+    - wool
+    - mutton
+
+pig:
+  health: 10
+  speed: 0.25
+  spawn_conditions:
+    - land
+  drops:
+    - porkchop
+
+chicken:
+  health: 4
+  speed: 0.3
+  spawn_conditions:
+    - land
+  drops:
+    - chicken
+    - feather
+
+horse:
+  health: 15
+  speed: 0.3
+  spawn_conditions:
+    - plains
+    - savanna
+  drops:
+    - leather
+
+villager:
+  health: 20
+  speed: 0.2
+  spawn_conditions:
+    - village
+  drops:
+    - none
+
+frog:
+  health: 10
+  speed: 0.2
+  spawn_conditions:
+    - swamp
+    - mangrove_swamp
+  drops:
+    - none
+
+axolotl:
+  health: 14
+  speed: 0.3
+  spawn_conditions:
+    - lush_caves
+  drops:
+    - none
+
+tadpole:
+  health: 6
+  speed: 0.2
+  spawn_conditions:
+    - swamp
+    - water
+  drops:
+    - none
+
+# Neutral Mobs
+wolf:
+  health: 8
+  speed: 0.3
+  spawn_conditions:
+    - forest
+    - taiga
+  drops:
+    - none
+
+polar_bear:
+  health: 30
+  speed: 0.25
+  spawn_conditions:
+    - ice
+    - snow
+  drops:
+    - fish
+
+bee:
+  health: 10
+  speed: 0.4
+  spawn_conditions:
+    - flowers
+    - trees
+  drops:
+    - honeycomb
+
+dolphin:
+  health: 10
+  speed: 0.4
+  spawn_conditions:
+    - ocean
+  drops:
+    - fish
+
+llama:
+  health: 15
+  speed: 0.2
+  spawn_conditions:
+    - savanna
+    - mountains
+  drops:
+    - leather
+
+panda:
+  health: 20
+  speed: 0.23
+  spawn_conditions:
+    - bamboo
+    - jungle
+  drops:
+    - bamboo
+
+# Other Mobs
+iron_golem:
+  health: 100
+  speed: 0.2
+  spawn_conditions:
+    - village
+  drops:
+    - iron_ingot
+    - poppy
+
+snow_golem:
+  health: 10
+  speed: 0.2
+  spawn_conditions:
+    - snow
+  drops:
+    - snowball
+
+evoker:
+  health: 24
+  speed: 0.5
+  spawn_conditions:
+    - woodland_mansion
+  drops:
+    - totem_of_undying
+
+vex:
+  health: 14
+  speed: 0.3
+  spawn_conditions:
+    - evoker
+  drops:
+    - none
+
+pillager:
+  health: 24
+  speed: 0.35
+  spawn_conditions:
+    - raid
+  drops:
+    - crossbow
+  equipment:
+    CROSSBOW:
+      chance: 10%
+
+ravager:
+  health: 100
+  speed: 0.4
+  spawn_conditions:
+    - raid
+  drops:
+    - saddle
